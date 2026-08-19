@@ -1,0 +1,8 @@
+{
+  "name": "integration-diagram-tools",
+  "description": "Generate standardized Level 3 integration sequence diagrams (Mermaid) and functional descriptions for Mulesoft and Frends integrations, top-down and bottom-up.",
+  "version": "2.0.0",
+  "author": {
+    "name": "Low Code Integration Team"
+  }
+}

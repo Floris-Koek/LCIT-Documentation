@@ -1,0 +1,15 @@
+{
+  "name": "lci-tools",
+  "owner": {
+    "name": "Low Code Integration Team"
+  },
+  "description": "Claude plugins maintained by the Low Code Integration Team for standardized integration documentation.",
+  "plugins": [
+    {
+      "name": "integration-diagram-tools",
+      "source": "./plugins/integration-diagram-tools",
+      "description": "Generate standardized Level 3 integration sequence diagrams (Mermaid) and functional descriptions for Mulesoft and Frends integrations, top-down and bottom-up.",
+      "version": "2.0.0"
+    }
+  ]
+}
