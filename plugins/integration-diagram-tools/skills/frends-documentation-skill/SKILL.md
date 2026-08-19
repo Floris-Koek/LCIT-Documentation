@@ -2,12 +2,12 @@
 name: frends-documentation-skill
 description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Frends-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een Frends-integratie, of documentatie voor een Frends-proces te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Frends process-exports/JSON of C# Code Tasks uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts). Gebruik `mulesoft-documentation-skill` in plaats hiervan voor Mulesoft-integraties.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Frends — Niveau 3: Integratieproces sequence diagram generator
 
-**Versie:** 1.1.0
+**Versie:** 1.1.1
 
 ## Taal
 
@@ -20,7 +20,7 @@ Uitzondering: technische identifiers die letterlijk uit de code/config komen (en
 Deze skill analyseert een bestaande **Frends**-integratie-implementatie en genereert automatisch:
 
 1. Een **Mermaid sequence diagram** dat voldoet aan de standards voor Niveau 3 (zie `../../shared/standards.md`).
-2. Een **functionele beschrijving** van het integratieproces (zie `references/functional-description-template.md`).
+2. Een **functionele beschrijving** van het integratieproces (zie `../../shared/functional-description-template.md`).
 
 Dit is de geautomatiseerde versie van het handmatige stappenplan uit de standards. De skill vervangt de standards niet — die blijven de bron van waarheid. Deze skill past ze toe.
 
@@ -76,7 +76,7 @@ Render het diagram in een artifact (`.mmd` of als mermaid-codeblok) zodat de geb
 
 ### Stap 4 — Genereer de functionele beschrijving
 
-Gebruik `references/functional-description-template.md` als structuur. De beschrijving is voor developers, testers en functioneel betrokkenen — leg uit *wat* de integratie doet en *waarom*, niet alleen de technische stappen.
+Gebruik `../../shared/functional-description-template.md` als structuur. De beschrijving is voor developers, testers en functioneel betrokkenen — leg uit *wat* de integratie doet en *waarom*, niet alleen de technische stappen.
 
 ### Stap 5 — Lever op
 
@@ -118,18 +118,22 @@ De gedeelde standards (`../../shared/standards.md`) hebben **geen eigen versienu
 
 Werk bij elke wijziging beide plekken bij (frontmatter én de leesbare regel) zodat ze nooit uit sync raken.
 
-## Architectuur: gedeelde standards tussen twee skills
+## Architectuur: gedeelde standaardbestanden tussen twee skills
 
-Deze skill en `mulesoft-documentation-skill` zijn bewust **gesplitst** (elk platform heeft eigen analyse-logica en eigen triggerwoorden, dus een losse, gerichte skill werkt betrouwbaarder dan één skill die eerst het platform moet raden), maar delen **dezelfde standards**. Om te voorkomen dat die standards in twee kopieën uit elkaar gaan lopen, leeft `standards.md` op **plugin-niveau**, niet in de map van deze skill zelf:
+Deze skill en `mulesoft-documentation-skill` zijn bewust **gesplitst** (elk platform heeft eigen analyse-logica en eigen triggerwoorden, dus een losse, gerichte skill werkt betrouwbaarder dan één skill die eerst het platform moet raden), maar delen alles wat platform-onafhankelijk is: de standards, de functionele-beschrijving-template, en het lege diagram-skeleton. Om te voorkomen dat die drie in twee kopieën uit elkaar gaan lopen, leven ze op **plugin-niveau**, niet in de map van deze skill zelf:
 
 ```
 plugins/integration-diagram-tools/
 ├── shared/
-│   └── standards.md              ← één centraal exemplaar
+│   ├── standards.md                          ← één centraal exemplaar
+│   ├── functional-description-template.md    ← idem
+│   └── assets/example-skeleton.mmd           ← idem
 └── skills/
-    ├── mulesoft-documentation-skill/   (verwijst naar hetzelfde bestand)
-    └── frends-documentation-skill/     (deze skill, verwijst naar ../../shared/standards.md)
+    ├── mulesoft-documentation-skill/   (verwijst naar dezelfde bestanden)
+    └── frends-documentation-skill/     (deze skill, verwijst naar ../../shared/...)
 ```
+
+Alleen wat écht platform-specifiek is — `frends-analyse.md` hier, `mulesoft-analyse.md` bij de andere skill — blijft los per skill.
 
 Er is bewust **geen live koppeling met Confluence** — `shared/standards.md` is een hardcoded bestand dat gewoon gelezen wordt, geen aparte check, geen automatische sync.
 
@@ -146,8 +150,8 @@ Gebruikers hoeven zelf niets te doen behalve op "update" klikken wanneer die bes
 
 - `../../shared/standards.md` — het volledige standards-document (bron van waarheid voor alle syntax- en stijlregels), gedeeld met `mulesoft-documentation-skill`, periodiek handmatig bijgewerkt vanaf Confluence door één persoon.
 - `references/frends-analyse.md` — hoe Frends-process-elementen mappen naar sequence diagram-concepten.
-- `references/functional-description-template.md` — structuur voor de functionele beschrijving.
-- `assets/example-skeleton.mmd` — leeg startpunt met de verplichte openingsregels, klaar om in te vullen.
+- `../../shared/functional-description-template.md` — structuur voor de functionele beschrijving, gedeeld met `mulesoft-documentation-skill`.
+- `../../shared/assets/example-skeleton.mmd` — leeg startpunt met de verplichte openingsregels, klaar om in te vullen.
 
 Wil de gebruiker deze documentatie in Confluence hebben? Gebruik daarvoor de losse skill `create-confluence-documentation` — dat is bewust geen onderdeel van deze skill.
 
