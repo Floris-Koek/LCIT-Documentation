@@ -1,47 +1,46 @@
 ---
-name: integration-sequence-diagram-top-down
-description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Mulesoft- of Frends-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een integratie, of documentatie voor een Mulesoft-flow of Frends-proces te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Mulesoft XML-flows, Frends process-exports/JSON, of C# Code Tasks uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts).
+name: mulesoft-documentation-skill
+description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Mulesoft-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een Mulesoft-integratie, of documentatie voor een Mulesoft-flow te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Mulesoft XML-flows uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts). Gebruik `frends-documentation-skill` in plaats hiervan voor Frends-integraties.
 metadata:
-  version: "2.0.0"
+  version: "1.1.0"
 ---
 
-# Niveau 3: Integratieproces sequence diagram — generator
+# Mulesoft — Niveau 3: Integratieproces sequence diagram generator
 
-**Versie:** 2.0.0
+**Versie:** 1.1.0
 
 ## Taal
 
-**Alle output van deze skill — het Mermaid-diagram (labels, notes, comments) én de functionele beschrijving — wordt altijd in het Engels geschreven**, ongeacht de taal van de aangeleverde input, de flow-XML/JSON, of van deze skill-instructies zelf (die blijven in het Nederlands, voor het team). Dit geldt ook bij het corrigeren of aanvullen van een bestaand diagram: lever het resultaat in het Engels op, ook als het origineel Nederlandstalige labels bevat.
+**Alle output van deze skill — het Mermaid-diagram (labels, notes, comments) én de functionele beschrijving — wordt altijd in het Engels geschreven**, ongeacht de taal van de aangeleverde input, de flow-XML, of van deze skill-instructies zelf (die blijven in het Nederlands, voor het team). Dit geldt ook bij het corrigeren of aanvullen van een bestaand diagram: lever het resultaat in het Engels op, ook als het origineel Nederlandstalige labels bevat.
 
 Uitzondering: technische identifiers die letterlijk uit de code/config komen (endpoint-paths, systeemnamen, veldnamen) worden niet vertaald — alleen de beschrijvende tekst eromheen (notes, functionele beschrijving, commentaar) is Engelstalig.
 
 ## Doel
 
-Deze skill analyseert een bestaande integratie-implementatie (Mulesoft of Frends) en genereert automatisch:
+Deze skill analyseert een bestaande **Mulesoft**-integratie-implementatie en genereert automatisch:
 
-1. Een **Mermaid sequence diagram** dat voldoet aan de standards voor Niveau 3 (zie `references/standards.md`).
+1. Een **Mermaid sequence diagram** dat voldoet aan de standards voor Niveau 3 (zie `../../shared/standards.md`).
 2. Een **functionele beschrijving** van het integratieproces (zie `references/functional-description-template.md`).
 
 Dit is de geautomatiseerde versie van het handmatige stappenplan uit de standards. De skill vervangt de standards niet — die blijven de bron van waarheid. Deze skill past ze toe.
 
+Voor Frends-integraties: gebruik de losse `frends-documentation-skill`. Deze twee skills zijn bewust gesplitst (elk platform heeft zijn eigen analyse-logica en triggerwoorden), maar delen dezelfde standards — zie "Architectuur" hieronder.
+
 ## Wanneer gebruiken
 
-- De gebruiker uploadt Mulesoft flow-XML, een Frends process-export (JSON) of C# Code Tasks en wil een sequence diagram en/of functionele beschrijving.
-- De gebruiker beschrijft een integratieproces in eigen woorden en wil dit gedocumenteerd zien volgens de standards.
-- De gebruiker vraagt om een bestaand Niveau 3-diagram te controleren, corrigeren of aan te vullen volgens de standards.
+- De gebruiker uploadt Mulesoft flow-XML en wil een sequence diagram en/of functionele beschrijving.
+- De gebruiker beschrijft een Mulesoft-integratieproces in eigen woorden en wil dit gedocumenteerd zien volgens de standards.
+- De gebruiker vraagt om een bestaand Niveau 3-diagram van een Mulesoft-flow te controleren, corrigeren of aan te vullen volgens de standards.
 
-Als er geen bestand is geüpload maar de gebruiker wel over "de integratie" praat, vraag welk platform (Mulesoft of Frends) en vraag om de flow-configuratie/code, of laat de gebruiker de stappen in de tekst beschrijven (bron-systeem, doel-systeem(en), endpoints, tussenliggende API's/services, foutafhandeling).
+Als er geen bestand is geüpload maar de gebruiker wel over "de integratie" praat, vraag om de flow-configuratie/code, of laat de gebruiker de stappen in de tekst beschrijven (bron-systeem, doel-systeem(en), endpoints, tussenliggende API's/services, foutafhandeling). Als onduidelijk is of het om Mulesoft of Frends gaat, vraag dit na — gok niet, en verwijs zo nodig naar `frends-documentation-skill`.
 
 ## Werkwijze (stappenplan)
 
 ### Stap 1 — Verzamel input
 
-Lees alle geüploade bestanden. Herken het platform:
+Lees alle geüploade bestanden. Verwacht Mulesoft: `.xml` flow-bestanden, vaak met `<flow>`, `<sub-flow>`, `<http:listener>`, `<http:request>`, `<choice>`, `<foreach>`, `<scatter-gather>`, `<try>`/`<error-handler>`. Zie `references/mulesoft-analyse.md` voor de volledige mapping van flow-elementen naar sequence diagram-concepten.
 
-- **Mulesoft**: `.xml` flow-bestanden, vaak met `<flow>`, `<sub-flow>`, `<http:listener>`, `<http:request>`, `<choice>`, `<foreach>`, `<scatter-gather>`, `<try>`/`<error-handler>`. Zie `references/mulesoft-analyse.md`.
-- **Frends**: JSON process-exports of C# Code Tasks, vaak met `Trigger`, `Elements`/`Tasks`, `HTTP Request`, `Loop`, `Router`/`Condition`, `Exception Handler`. Zie `references/frends-analyse.md`.
-
-Als het platform niet duidelijk is uit de bestandsinhoud, vraag het kort na — raad het niet.
+Als het aangeleverde bestand duidelijk geen Mulesoft is (bijv. een Frends JSON-export), meld dit en verwijs naar `frends-documentation-skill` in plaats van door te gaan.
 
 ### Stap 2 — Analyseer de flow
 
@@ -50,7 +49,7 @@ Doorloop de volledige flow vanaf het startpunt (trigger) tot en met de uiteindel
 - **Participants**: alle systemen en API-lagen die met elkaar communiceren (bron-systeem, System API `-sa`, Process API `-pa`, Experience API `-ea`, externe systemen). Gebruik korte, consistente afkortingen — zie sectie 3.4 en 7.2 van de standards.
 - **Interacties**: elke call tussen participants — method + endpoint (bijv. `POST /v1/orders`), en de bijbehorende response (statuscode, bijv. `200 OK`, `400 Bad Request`).
 - **Synchroon vs asynchroon**: request/response calls zijn synchroon (`->>+` / `-->>-`); fire-and-forget events (queues, topics, pub/sub) zijn asynchroon (`-)`).
-- **Logische blokken**: conditionele paden (choice/router → `alt`/`else`), optionele stappen zonder alternatief (`opt`), herhalingen over een lijst (foreach/loop → `loop`), parallelle verwerking (scatter-gather/parallel → `par`).
+- **Logische blokken**: conditionele paden (choice → `alt`/`else`), optionele stappen zonder alternatief (`opt`), herhalingen over een lijst (foreach → `loop`), parallelle verwerking (scatter-gather → `par`).
 - **Foutafhandeling**: try/catch, error-handlers, on-error scopes → modelleer als `alt succes` / `else fout` met het bijbehorende statuscode-pad.
 - **Groeperingen**: elke logische processtap (bijv. "ophalen OAuth-token", "aanroepen SAP") wordt een eigen `rect`-blok met een `note over` erboven, conform sectie 4 van de standards.
 
@@ -58,7 +57,7 @@ Sla géén interne transformatiestappen (DataWeave transforms, variabele-assignm
 
 ### Stap 3 — Genereer het Mermaid-diagram
 
-Bouw het diagram exact volgens `references/standards.md`:
+Bouw het diagram exact volgens `../../shared/standards.md`:
 
 1. Begin met de vaste openingsregels uit de standards (theme/themeVariables config, sectie 3.1) — kopieer deze **letterlijk**, wijzig nooit de kleuren.
 2. `sequenceDiagram` + `title Main Flow – <naam>` + `autonumber`.
@@ -107,9 +106,9 @@ Loop altijd deze checklist af voordat je het resultaat presenteert:
 
 ## Versiebeheer
 
-Deze skill houdt zijn eigen versienummer bij in de frontmatter (`metadata.version`) en in de leesbare `**Versie:**`-regel bovenaan dit document. Dit versienummer omvat **ook** `references/standards.md`: de standards zijn hardcoded onderdeel van deze skill (zie "Architectuur" hieronder), dus een wijziging daaraan is net zo goed een wijziging aan de skill en telt mee voor de versie-ophoging.
+Deze skill houdt zijn eigen versienummer bij in de frontmatter (`metadata.version`) en in de leesbare `**Versie:**`-regel bovenaan dit document. Dit versienummer gaat over wijzigingen aan déze skill specifiek (Mulesoft-analyse, template, stappenplan).
 
-Dit versienummer is bovendien functioneel belangrijk voor de marktplaats-distributie: gebruikers zien en krijgen een update alleen aangeboden wanneer dit nummer omhoog gaat. Vergeet je de versie op te hogen, dan denkt de marktplaats dat er niets veranderd is en blijft iedereen op de oude versie zitten.
+De gedeelde standards (`../../shared/standards.md`) hebben **geen eigen versienummer per skill** — zie "Architectuur" hieronder voor hoe een wijziging daaraan wordt doorgevoerd.
 
 **Bij elke aanpassing aan deze skill wordt het versienummer verplicht opgehoogd**, ook als daar niet expliciet om gevraagd wordt. Bepaal zelf, op basis van de aard van de wijziging, of het een patch, minor of major betreft (semver):
 
@@ -119,35 +118,37 @@ Dit versienummer is bovendien functioneel belangrijk voor de marktplaats-distrib
 
 Werk bij elke wijziging beide plekken bij (frontmatter én de leesbare regel) zodat ze nooit uit sync raken.
 
-## Architectuur: waar leven de standards, en hoe komen updates bij gebruikers?
+## Architectuur: gedeelde standards tussen twee skills
 
-Er is bewust **geen live koppeling meer met Confluence**. `references/standards.md` is een hardcoded, gebundeld onderdeel van deze skill — geen aparte check, geen automatische sync, geen vragen aan de gebruiker over updaten. De skill leest dit bestand gewoon zoals elk ander referentiebestand.
+Deze skill en `frends-documentation-skill` zijn bewust **gesplitst** (elk platform heeft eigen analyse-logica en eigen triggerwoorden, dus een losse, gerichte skill werkt betrouwbaarder dan één skill die eerst het platform moet raden), maar delen **dezelfde standards**. Om te voorkomen dat die standards in twee kopieën uit elkaar gaan lopen, leeft `standards.md` op **plugin-niveau**, niet in de map van deze skill zelf:
 
-Twee plekken, twee duidelijk gescheiden rollen:
+```
+plugins/integration-diagram-tools/
+├── shared/
+│   └── standards.md              ← één centraal exemplaar
+└── skills/
+    ├── mulesoft-documentation-skill/   (deze skill, verwijst naar ../../shared/standards.md)
+    └── frends-documentation-skill/     (verwijst naar hetzelfde bestand)
+```
 
-- **Confluence** — blijft de plek waar het team de standards inhoudelijk bijhoudt en bediscussieert. Dit is puur een werkdocument voor mensen, geen bron waar de skill live uit leest.
-- **De skill zelf (`references/standards.md`)** — een bewuste, periodieke kopie. Eén keer per zoveel tijd (bijv. elk kwartaal, of wanneer er een relevante wijziging op Confluence is doorgevoerd) kopieert iemand van het team de actuele Confluence-inhoud handmatig naar dit bestand, hoogt de skill-versie op (zie "Versiebeheer"), en publiceert de nieuwe versie naar de marktplaats (zie hieronder).
+Er is bewust **geen live koppeling met Confluence** — `shared/standards.md` is een hardcoded bestand dat gewoon gelezen wordt, geen aparte check, geen automatische sync.
 
-### Distributie via de marktplaats
+**Bijwerken van de standards is een bewuste, handmatige actie door één persoon, ongeveer eens per maand** (of eerder, bij een relevante Confluence-wijziging):
 
-Deze skill wordt gedistribueerd via een eigen, door het team beheerde marktplaats (vergelijkbaar met hoe bijvoorbeeld de Boomi Companion dit doet). Gebruikers voegen de marktplaats **eenmalig** toe en installeren de skill daaruit; nieuwe versies (inclusief bijgewerkte standards) verschijnen vanzelf als beschikbare update die met één klik te installeren is — geen handmatig `.skill`-bestand meer downloaden en opnieuw uploaden per gebruiker.
-
-Voor het team betekent dit een simpel, herhaalbaar releaseproces:
-
-1. Kopieer de actuele standards vanaf Confluence naar `references/standards.md`.
-2. Werk zo nodig ook `mulesoft-analyse.md`, `frends-analyse.md`, `functional-description-template.md` of `assets/example-skeleton.mmd` bij, als de wijziging daar doorwerkt.
-3. Hoog het versienummer op (patch/minor/major, zie "Versiebeheer") — dit is wat de marktplaats laat zien als "update beschikbaar".
+1. Kopieer de actuele standards vanaf Confluence naar `plugins/integration-diagram-tools/shared/standards.md` — **één keer, dit werkt automatisch door voor beide skills** omdat ze naar hetzelfde bestand verwijzen.
+2. Werk zo nodig ook de platform-specifieke referentiebestanden bij (`mulesoft-analyse.md` in deze skill, `frends-analyse.md` in de andere) als de wijziging daar doorwerkt.
+3. Hoog het versienummer op van **beide** skills (`mulesoft-documentation-skill` én `frends-documentation-skill`) en van de plugin zelf (`plugin.json`) — ook als er verder niets aan een van beide skills is gewijzigd, want de effectieve inhoud (via de gedeelde standards) is voor beide veranderd. Dit is wat de marktplaats gebruikt om de update aan te bieden.
 4. Publiceer de nieuwe versie naar de marktplaats-repository.
 
 Gebruikers hoeven zelf niets te doen behalve op "update" klikken wanneer die beschikbaar is.
 
 ## Referentiebestanden
 
-- `references/standards.md` — het volledige standards-document (bron van waarheid voor alle syntax- en stijlregels), periodiek handmatig bijgewerkt vanaf Confluence.
+- `../../shared/standards.md` — het volledige standards-document (bron van waarheid voor alle syntax- en stijlregels), gedeeld met `frends-documentation-skill`, periodiek handmatig bijgewerkt vanaf Confluence door één persoon.
 - `references/mulesoft-analyse.md` — hoe Mulesoft-flow-elementen mappen naar sequence diagram-concepten.
-- `references/frends-analyse.md` — hoe Frends-process-elementen mappen naar sequence diagram-concepten.
 - `references/functional-description-template.md` — structuur voor de functionele beschrijving.
-- `references/confluence-embedding.md` — geteste kennis over hoe Mermaid-diagrammen correct in Confluence renderen, voor toekomstig gebruik als deze skill wordt uitgebreid met direct publiceren naar Confluence.
 - `assets/example-skeleton.mmd` — leeg startpunt met de verplichte openingsregels, klaar om in te vullen.
 
-Lees `standards.md` altijd volledig door vóór het genereren van een diagram — dit bestand bevat de exacte sjablonen (sectie 5) en het volledige uitgewerkte voorbeeld (sectie 8) waar je de output tegen moet spiegelen.
+Wil de gebruiker deze documentatie in Confluence hebben? Gebruik daarvoor de losse skill `create-confluence-documentation` — dat is bewust geen onderdeel van deze skill.
+
+Lees `../../shared/standards.md` altijd volledig door vóór het genereren van een diagram — dit bestand bevat de exacte sjablonen (sectie 5) en het volledige uitgewerkte voorbeeld (sectie 8) waar je de output tegen moet spiegelen.

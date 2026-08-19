@@ -1,6 +1,6 @@
 # Mermaid-diagrammen embedden in Confluence
 
-Deze kennis is getest en bevestigd op een echte pagina in deze Confluence-space (ACR): [Dollevoet Integration — Level 3 Sequence Diagrams (test)](https://virtualsciences.atlassian.net/wiki/spaces/ACR/pages/1288077313). Gebruik dit als deze skill ooit uitgebreid wordt met een stap die diagrammen/documentatie rechtstreeks naar Confluence wegschrijft (bijv. via de Atlassian/Confluence-connector). Dit is puur referentiekennis — deze skill zelf publiceert nog niets automatisch naar Confluence.
+Deze kennis is getest en bevestigd op een echte pagina in deze Confluence-space (ACR): [Dollevoet Integration — Level 3 Sequence Diagrams (test)](https://virtualsciences.atlassian.net/wiki/spaces/ACR/pages/1288077313). Dit is de exacte embedding-methode die deze skill gebruikt bij het opbouwen van een Confluence-pagina.
 
 ## De regel
 
