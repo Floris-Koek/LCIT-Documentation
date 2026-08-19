@@ -1,6 +1,6 @@
 # Frends-processen analyseren voor het Niveau 3 sequence diagram
 
-Dit document beschrijft hoe je elementen uit een Frends-proces (JSON-export van een Process, of een C# Code Task) herkent en vertaalt naar het Niveau 3 Mermaid sequence diagram. Gebruik dit samen met `standards.md`. Raadpleeg bij twijfel over Frends-specifieke concepten (Tasks, Agents, Environment Variables, expressies) ook de `fc-integration:frends-ipaas-developer`-skill, indien beschikbaar.
+Dit document beschrijft hoe je elementen uit een Frends-proces (JSON-export van een Process, of een C# Code Task) herkent en vertaalt naar het Niveau 3 Mermaid sequence diagram. Gebruik dit samen met `../../shared/standards.md`. Raadpleeg bij twijfel over Frends-specifieke concepten (Tasks, Agents, Environment Variables, expressies) ook de `fc-integration:frends-ipaas-developer`-skill, indien beschikbaar.
 
 ## 1. Waar te beginnen
 

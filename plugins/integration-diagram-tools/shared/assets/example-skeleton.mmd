@@ -23,27 +23,26 @@ sequenceDiagram
     autonumber
 
     participant <source-system>
-    participant <api-name>-ea
-    participant <api-name>-pa
-    participant <api-name>-sa
+    participant <intermediate-system-1>
+    participant <intermediate-system-2>
     participant <target-system>
 
     %% ─────────────────────────────────────────────
     %% Inbound request
     %% ─────────────────────────────────────────────
-    <source-system> ->>+ <api-name>-ea: <METHOD> <path>
+    <source-system> ->>+ <intermediate-system-1>: <METHOD> <path>
 
     %% ─────────────────────────────────────────────
     %% Step 1 – <description of first step>
     %% ─────────────────────────────────────────────
-    note over <api-name>-ea,<api-name>-pa: <short functional description>
+    note over <intermediate-system-1>,<intermediate-system-2>: <short functional description>
 
     rect rgb(235, 245, 255)
-        <api-name>-ea ->>+ <api-name>-pa: <METHOD> <path>
-        <api-name>-pa -->>- <api-name>-ea: <status code>
+        <intermediate-system-1> ->>+ <intermediate-system-2>: <METHOD> <path>
+        <intermediate-system-2> -->>- <intermediate-system-1>: <status code>
     end
 
     %% ─────────────────────────────────────────────
     %% Outbound response
     %% ─────────────────────────────────────────────
-    <api-name>-ea -->>- <source-system>: <status code>
+    <intermediate-system-1> -->>- <source-system>: <status code>

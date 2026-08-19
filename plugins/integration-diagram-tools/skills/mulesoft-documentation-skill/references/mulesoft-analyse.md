@@ -1,6 +1,6 @@
 # Mulesoft-flows analyseren voor het Niveau 3 sequence diagram
 
-Dit document beschrijft hoe je elementen uit een Mulesoft-flow (XML) herkent en vertaalt naar het Niveau 3 Mermaid sequence diagram. Gebruik dit samen met `standards.md`.
+Dit document beschrijft hoe je elementen uit een Mulesoft-flow (XML) herkent en vertaalt naar het Niveau 3 Mermaid sequence diagram. Gebruik dit samen met `../../shared/standards.md`.
 
 ## 1. Waar te beginnen
 
@@ -21,6 +21,8 @@ Mulesoft-projecten volgen meestal het drie-lagen API-model (zie Niveau 2-diagram
 | System API | rechtstreeks contact met bron-/doelsysteem (SAP, Salesforce, DB) | `<naam>-sa` |
 
 Elke aparte Mulesoft-applicatie (elk `.xml`-project of elke duidelijk gescheiden API) wordt een eigen `participant`. Het achterliggende systeem waar de System API mee praat (SAP, WMS, SugarCRM, etc.) is ook een eigen participant.
+
+Het gedeelde skelet (`../../shared/assets/example-skeleton.mmd`) gebruikt bewust platform-neutrale placeholders (`<intermediate-system-1>`, `<intermediate-system-2>`) omdat het ook door `frends-documentation-skill` wordt gebruikt. Vul die placeholders voor een Mulesoft-integratie in volgens de laag-conventie hierboven, bijv. `<intermediate-system-1>` → `sap_sa` (System API), `<intermediate-system-2>` → `sap_pa` (Process API).
 
 ## 3. Flow-elementen → sequence diagram-concepten
 

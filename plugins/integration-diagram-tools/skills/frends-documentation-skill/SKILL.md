@@ -2,12 +2,12 @@
 name: frends-documentation-skill
 description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Frends-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een Frends-integratie, of documentatie voor een Frends-proces te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Frends process-exports/JSON of C# Code Tasks uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts). Gebruik `mulesoft-documentation-skill` in plaats hiervan voor Mulesoft-integraties.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # Frends — Niveau 3: Integratieproces sequence diagram generator
 
-**Versie:** 1.1.1
+**Versie:** 1.1.2
 
 ## Taal
 
@@ -106,7 +106,9 @@ Loop altijd deze checklist af voordat je het resultaat presenteert:
 
 ## Versiebeheer
 
-Deze skill houdt zijn eigen versienummer bij in de frontmatter (`metadata.version`) en in de leesbare `**Versie:**`-regel bovenaan dit document. Dit versienummer gaat over wijzigingen aan déze skill specifiek (Frends-analyse, template, stappenplan).
+Deze skill houdt zijn eigen versienummer bij in de frontmatter (`metadata.version`) en in de leesbare `**Versie:**`-regel bovenaan dit document. Dit versienummer gaat over wijzigingen aan déze skill specifiek (Frends-analyse, template, stappenplan) en is vooral **informatief** — het laat mensen die dit bestand lezen zien hoe volwassen/stabiel de skill is.
+
+**Let op — dit is niet wat de marktplaats gebruikt om updates aan te bieden.** Deze skill wordt gedistribueerd als onderdeel van één plugin (`integration-diagram-tools`, samen met `mulesoft-documentation-skill` en `create-confluence-documentation`). De marktplaats kijkt naar het versienummer in `plugins/integration-diagram-tools/.claude-plugin/plugin.json` — dat is de enige plek die daadwerkelijk bepaalt of gebruikers een update aangeboden krijgen. Zie "Architectuur" hieronder voor het volledige releaseproces.
 
 De gedeelde standards (`../../shared/standards.md`) hebben **geen eigen versienummer per skill** — zie "Architectuur" hieronder voor hoe een wijziging daaraan wordt doorgevoerd.
 
