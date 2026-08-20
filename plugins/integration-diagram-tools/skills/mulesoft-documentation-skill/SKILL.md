@@ -2,12 +2,12 @@
 name: mulesoft-documentation-skill
 description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Mulesoft-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een Mulesoft-integratie, of documentatie voor een Mulesoft-flow te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Mulesoft XML-flows uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts). Gebruik `frends-documentation-skill` in plaats hiervan voor Frends-integraties.
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Mulesoft — Niveau 3: Integratieproces sequence diagram generator
 
-**Versie:** 1.2.0
+**Versie:** 1.3.0
 
 ## Taal
 

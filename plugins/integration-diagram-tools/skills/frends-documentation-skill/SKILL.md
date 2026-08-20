@@ -2,12 +2,12 @@
 name: frends-documentation-skill
 description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Frends-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een Frends-integratie, of documentatie voor een Frends-proces te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Frends process-exports/JSON of C# Code Tasks uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts). Gebruik `mulesoft-documentation-skill` in plaats hiervan voor Mulesoft-integraties.
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Frends — Niveau 3: Integratieproces sequence diagram generator
 
-**Versie:** 1.3.0
+**Versie:** 1.4.0
 
 ## Taal
 
