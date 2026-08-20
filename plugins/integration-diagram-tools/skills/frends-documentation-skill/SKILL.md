@@ -2,12 +2,12 @@
 name: frends-documentation-skill
 description: Genereer een Niveau 3 Integratieproces sequence diagram (Mermaid) en bijbehorende functionele beschrijving vanuit een bestaande Frends-integratie. Gebruik deze skill altijd wanneer de gebruiker vraagt om een sequence diagram, integratiediagram, functionele beschrijving van een Frends-integratie, of documentatie voor een Frends-proces te genereren — ook als ze alleen "diagram voor deze integratie" of "documenteer deze flow" zeggen zonder het woord "Mermaid" of "Niveau 3" te noemen. Trigger ook wanneer de gebruiker Frends process-exports/JSON of C# Code Tasks uploadt en vraagt om deze te analyseren, te visualiseren of te documenteren. Deze skill implementeert het door het Low Code Integration Team vastgestelde Niveau 3-diagramstandaard (sequence diagrams, geen flowcharts). Gebruik `mulesoft-documentation-skill` in plaats hiervan voor Mulesoft-integraties.
 metadata:
-  version: "1.1.2"
+  version: "1.2.0"
 ---
 
 # Frends — Niveau 3: Integratieproces sequence diagram generator
 
-**Versie:** 1.1.2
+**Versie:** 1.2.0
 
 ## Taal
 
@@ -40,6 +40,8 @@ Als er geen bestand is geüpload maar de gebruiker wel over "de integratie" praa
 
 Lees alle geüploade bestanden. Verwacht Frends: JSON process-exports of C# Code Tasks, vaak met `Trigger`, `Elements`/`Tasks`, `HTTP Request`, `Loop`, `Router`/`Condition`, `Exception Handler`. Zie `references/frends-analyse.md` voor de volledige mapping van flow-elementen naar sequence diagram-concepten.
 
+**Controleer eerst het exportformaat** (zie sectie 0 van `references/frends-analyse.md`): een `.bpmn`-bestand bevat alleen het diagramskelet, geen functionele details. Als alleen een BPMN-XML is aangeleverd, meld dit expliciet aan de gebruiker en vraag om de JSON-export voordat je verdergaat.
+
 Als het aangeleverde bestand duidelijk geen Frends is (bijv. een Mulesoft XML-flow), meld dit en verwijs naar `mulesoft-documentation-skill` in plaats van door te gaan.
 
 ### Stap 2 — Analyseer de flow
@@ -49,7 +51,7 @@ Doorloop de volledige flow vanaf het startpunt (trigger) tot en met de uiteindel
 - **Participants**: alle systemen die met elkaar communiceren (bron-systeem, Frends-proces/subprocess, externe systemen). Gebruik korte, consistente afkortingen — zie sectie 3.4 en 7.2 van de standards.
 - **Interacties**: elke call tussen participants — method + endpoint (bijv. `POST /v1/orders`), en de bijbehorende response (statuscode, bijv. `200 OK`, `400 Bad Request`).
 - **Synchroon vs asynchroon**: request/response calls zijn synchroon (`->>+` / `-->>-`); fire-and-forget events (queues, topics, pub/sub) zijn asynchroon (`-)`).
-- **Logische blokken**: conditionele paden (router/condition → `alt`/`else`), optionele stappen zonder alternatief (`opt`), herhalingen over een lijst (loop → `loop`), parallelle verwerking (parallel execution → `par`).
+- **Logische blokken**: conditionele paden (Exclusive Decision → `alt`/`else`; **let op de Inclusive Decision** — daar kunnen meerdere takken tegelijk vuren, dus die modelleer je als losse `opt`-blokken per tak, niet als `alt`/`else`, zie sectie 3 van `references/frends-analyse.md`), optionele stappen zonder alternatief (`opt`), herhalingen over een lijst (loop/foreach/while → `loop`), parallelle verwerking (parallel execution → `par`).
 - **Foutafhandeling**: exception handlers → modelleer als `alt succes` / `else fout` met het bijbehorende statuscode-pad.
 - **Groeperingen**: elke logische processtap (bijv. "ophalen OAuth-token", "aanroepen SAP") wordt een eigen `rect`-blok met een `note over` erboven, conform sectie 4 van de standards.
 
@@ -151,7 +153,7 @@ Gebruikers hoeven zelf niets te doen behalve op "update" klikken wanneer die bes
 ## Referentiebestanden
 
 - `../../shared/standards.md` — het volledige standards-document (bron van waarheid voor alle syntax- en stijlregels), gedeeld met `mulesoft-documentation-skill`, periodiek handmatig bijgewerkt vanaf Confluence door één persoon.
-- `references/frends-analyse.md` — hoe Frends-process-elementen mappen naar sequence diagram-concepten.
+- `references/frends-analyse.md` — hoe Frends-process-elementen mappen naar sequence diagram-concepten, inclusief exportformaat-detectie (BPMN-XML vs JSON), de volledige trigger-taxonomie, het Exclusive/Inclusive Decision-onderscheid, en shape Type-codes voor betrouwbare herkenning. Grotendeels gebaseerd op kennis uit de `fc-integration:frends-ipaas-developer`-skill.
 - `../../shared/functional-description-template.md` — structuur voor de functionele beschrijving, gedeeld met `mulesoft-documentation-skill`.
 - `../../shared/assets/example-skeleton.mmd` — leeg startpunt met de verplichte openingsregels, klaar om in te vullen.
 
